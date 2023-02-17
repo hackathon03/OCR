@@ -1,0 +1,830 @@
+{
+	"info": {
+		"_postman_id": "fe25105f-1531-4943-a6cf-a0ab4c6121c9",
+		"name": "BOCR-Collection - 2022",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"token\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "response_type",
+							"value": "token",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{auth_url}}/oauth/token",
+					"host": [
+						"{{auth_url}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document Upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"job_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"value": "",
+							"type": "file"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document Upload - Store Image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"job_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"value": "",
+							"type": "file"
+						},
+						{
+							"key": "storeImage",
+							"value": "True",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document Upload extract table",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"job_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "/Users/i070677/Suba/Projects/demo_docs/Sample_tax_invoice.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Result Retrieval (JSON - default)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Images and Result Retrieval (JSON - default)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}/downloads",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}",
+						"downloads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Images and Result Retrieval - Rotation True (Json)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}/downloads?derotation=true",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}",
+						"downloads"
+					],
+					"query": [
+						{
+							"key": "derotation",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Result Retrieval (XML)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}?format=xml",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "xml"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Images and Result Retrieval (XML)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}/downloads?format=xml",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}",
+						"downloads"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "xml"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Images and Result Retrieval - Rotation True (XML)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}/downloads?format=xml&derotation=true",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}",
+						"downloads"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "xml"
+						},
+						{
+							"key": "derotation",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Result Retrieval (TXT)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}?format=txt",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "txt"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Result Retrieval (TXT)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}?format=txt",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ocr",
+								"jobs",
+								"{{job_id}}"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "txt"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "access-control-allow-origin",
+							"value": "*"
+						},
+						{
+							"key": "content-length",
+							"value": "47883"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "date",
+							"value": "Wed, 03 Nov 2021 02:53:14 GMT"
+						},
+						{
+							"key": "server",
+							"value": "waitress"
+						},
+						{
+							"key": "x-vcap-request-id",
+							"value": "ba484e14-f1c4-4a3e-4e87-c116fda702d1"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=31536000; includeSubDomains; preload;"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"4d8e3b8c-c3da-48d0-9df0-8642f1b06b63\",\n    \"format\": \"txt\",\n    \"receivedTime\": \"2021-11-03T02:51:51+00:00\",\n    \"acceptedTime\": \"2021-11-03T02:51:59+00:00\",\n    \"expireTime\": \"2021-11-03T03:51:59+00:00\",\n    \"pageTotal\": 5,\n    \"status\": \"DONE\",\n    \"progress\": \"100%\",\n    \"result\": \"                                                                                                                              Счёт Nџ 0VT/2424437/34876204 от 15.06.2021\\n                                                                                                                      000 \\\"комус\\\" 105005, ГОРОД МОСКВА, НАБЕРЕЖНАЯ АКАДЕМИКА ТУПОЛЕВА. БиК 044525225\\n                                                                                                                    ДОМ 15, КОРПУС 29, Э1 5 ПОМ 1КАЬ 18 Банк получателя ПАО СБЕРБАНК г. Москва\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                  К/Сч.Nџ 30101810400000000225\\n                                                                                                            ИНН 7721793895 КПП 997350001\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                          P/Cч.Nџ 40702810738000122590\\n                                                                                                        Получатель платежа ООО \\\"КОМУС\\\"\\n                                                                                                  Заказчик (Покупатель) ООО \\\"ВДАИ\\\" ИНН 9717065544 КПГ /(1/01001\\n\\n                                                                                              Грузополучатель ООО \\\"ВДАИ\\\" 125047 г.Москва ул. Іверская-ямская 1-я 4\\n                                                                                          Информация по доставке Наталья 9645254904\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                        ДОМ 15, КОРПУС 29, ЭТ 5 ПОМ I КАБ 18\\n                                                                                        Грузоотпрзвитель ООО \\\"КОМУС\\\" 105005, ГОРОД МОСКВА, НАБЕРЕЖНАЯ АКАДЕМИКА ГУПОЛЕБА,\\n                                                                                    Контакты по заказу\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                меп (495) 780-80-80, (495) 825-825-8 факс 8-800-200-33-83 e-mall kc@komus.net\\n                                                                              По недостаткам в раболте обращаться в Сервис - Центр 8-800-100-82-92 (бесплатный),(495)221-61-75, e-mal!:ssc{@komus.net\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                        Артикул Наименование товара Ea Коли- Цена без НДС Сумма без НДС % НДС Сумма НДС Сумма с НДС\\n\\n\\n                                                                        изм. чество РУБ РУБ РУБ РУБ\\n                                                                    вежитель воздука. Kонц. Grass/Apariment sefes AS+, 0, 6л_Tip шт 1| 119,97| 119,9/| 20% 23,99 140,50\\n                                                                  200n0a loain arnansu A4+ Attache Selection 120 MA 50 urlyn ynax 3 496,33 1 488,99 20% 291,30 1/60,79\\n\\n                                                            4925 Папка-регистратор BANTEX Strong Line 1451-09, 50мм, красный, ПbIa, шт 1 243,47 243,47 20% 48,69 292,16\\n                                                          карм.кор\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                        оот домки 10штрулп черный вохто2ом руп 4 116,28| 465,12 20% 93,02 00, 14\\n                                                    Полотенца бумажные д/дисп. Luscan Prore ssional Vслож2 упак 1 1 868,23 1 868,23 20% 373,65 2 241,88\\n                                                    847945 слбелвтор200л20пач/уп\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                \\\"REnE Кпейкие закпадки пласт. Стрелки 5цв по 20л. 12мм асс Post-I1 684-ARK1 упак шт 3 226,57 679,71 20% 135,94 815,65\\n                                            тветџ |сивали Alache, 28 ми оцинкованные, 100 шт. в карт уп упак 5 28,17| 140,85 20% 26,11 199,02\\n\\n\\n\\n\\n                                        401004 SSTaDeIIN DURACELL BASIC AA/LRO3-18BL ynax 1 832,50 852,501 20% 166,50 998,00\\n                                    172031 ,Папка-регистратор Комус Экономи 75мм фиолетовая, ПБПТ, карм.кор. шт 3 227,11 681,33 20% 136,27 817,60\\n                                  мет.уг\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                1160668 Файл-вкладыш A4 60мкм. S Элементари с перфорац, 100 шт.уп упак 1 476,63 476,63 20% 95,33 571,96\\n\\n\\n\\n\\n\\n                            Аа 10017. гларкаяЭлементари 0, 035 мм упак 200,75 200,75 20% 4U,19 240,90\\n                          FEIDE (\\ufffdRON YOMVC, 28 \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd 100 U\\ufffd \\ufffd\\ufffd\\ufffd\\ufffd ynax 5 57,74 288,70 20% 57,18 340,44\\n                      Кпейкие закладки пласт. POР-UP стрелки 4цв по зол. 4оммх12 Aпасhе WT 5 99,17 495,85 20% 99,17 595,02\\n                  479038 Sel\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                тов Комус Стандарт 75им синяя, ПЕП2, карм.кор. метуг шт 2 243,15 485,30| 20% 9/,20) 000,20\\n            џвощая для прошизки документов оранхевая, 100 м. Зштуп упак 2 254,17| 508,34 20% 101,5/| b10,01\\n\\n          канцелирская ЭМ SСОТСН 15 19х7, 5 сатин, на диспенс шт 109,26) 109,26 20% 21,65 131, 1|\\n      \\ufffdS4 \\ufffdO\\ufffdv\\ufffd \\ufffd\\ufffdI\\ufffd \\ufffd\\ufffdO\\ufffdOSNS ATTACHE 4\\ufffd\\ufffdM X \\ufffdOM \\ufffd\\ufffd\\ufffd \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd UT 1 77,501 77,50 20% 15,50 93,00\\n  153082 Конверты Белый Е65стрип 110x220 80г КОМУС 100шп/уп 12уџ/кор упак 2 171,45 342,90 20% 68,58 411,48\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nСтраница 1 из 3\\nСчёт Nџ 0VT/2424437/34876204\\f                                                                                                                                Ea. Konu- Цена без НДС Сумма без НДС и НПс Сумма НДС Сумма с НДС\\n                                                                                                                              Apmukyn Наименование товара изм. чество PYE PY5 PY5 PYE\\n                                                                                                                          vrnere oven ror CSS cron 110-220 120r KOMYC (Ourlyn ynax 1 174,37 174,37 20% 34,87 203,24\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                      AO 20.Set NEW/38X14MM UT 1 868,18 656,18 20% 111,04 1 000,06\\n                                                                                                                    a renesn BIC 897178 2041 UT 1 132,50 132,50 20% 20,90 103,00\\n                                                                                                                Средство для мытья посуды Synergelic Антибактериальное, лимон и LLT 1 115,83 115,83 20% 23,17 139,00\\n                                                                                                              дозатор\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                          1009302 Ручка гелевая автоматическая BIC Gelocity Original черн, 0, 35мм, IUT 2 61,49 122,98 20% 24,60 147,58\\n                                                                                                        резин манж\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                      SERDE TN KOVVO O IRE ROROU KVŠ 7SXTS KETSIA 20O0 LIT 2 170,97 541,94 20% 56,39 $10,05\\n\\n\\n\\n\\n\\n\\n                                                                                                  D So 330 75,76 00 UIT 2 133,83] 257,6 20% 55,03 21,19\\n                                                                                              Корректирующ ая жидкость Attache 20мл на быстросохнущей осн, кисточка UIT 1 41,43 41,43 20% 8,29 49,72\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                            10017 66134 LUT 1 70,83 70,83 20% 14,17 85,00\\n                                                                                        200257 |Полушка для смачивания пальцев гелевая АПГАСПЕ сог Россия LUT 1 21,99 21,99 20% 4,40 26,39\\n                                                                                      140353 Блокнот Скрепка А6 32л. клетка АТТАСНЕ офиС. (БК)\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                  Блокнот А6, 48л, клетка, скоба, обл.мелов.бум+ламин. Живые моменты в LUT 1 24,13 24,13 20% 4,83 28,96\\n                                                                                927498 acc 032065\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                              scenve Trnotwre sovnooue nacr. Sue no 250. 1240ox45 Attachel PET-01 UT 2 149,17 298,34 20% 93,01 300,01\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                          CrDenK GU8 nO 24n. 12MM ROH POSH 684-ARR4 UT 2 225,88 451,/61 20% 50,00 04, 11\\n\\n\\n\\n                                                                      \\ufffd\\ufffd\\ufffd \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd., U\\ufffd\\ufffd UT 1 349,43 349,43 20% 09,09 +13,06\\n                                                                  eroo (erennon Allache Eco no 20 Mic, Ue, e acopr. (epH, CH\\ufffd, Ber), N424/6, 26/6 UT 1 145,68 149,66 20% 29,14 174,02\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                DVON 1, SK1OOM (Basic) Pyn 1| 2 144,17 2 144,1/ 20% 420,00 £019,00\\n                                                            s owre reneane Allache Selection Gide Megaofice 0.3 UN, VepH2, Re\\ufffdTO\\ufffd. UT 1 54,75 54,75 20% 10,99 09,70\\n\\n                                                      172051 Папка-регистратор Комус мрамор карт 75мм черн хореш, бум/бум, карм.кор. шт 3 190,82 572,46 20% 114,49 686,95\\n                                                      мет.уг\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                    or Gae Sue no 50n. 14wuN50 Attache UT 1 32,86 32,851 20% 0,07 03,40\\n                                                IOOLECO COONOIRO THE MUTS ROCVAN UNICARE AnOA Bepa In, nyU-yn UT 1 84,17 86,1/ 20% 10,09 101,00\\n                                            seone ciotere kVN LUX Business (A4 \\ufffda\\ufffd\\ufffda B, 80 \\ufffdke M, 500 0) UT 10 249,08 2 490,80 20% 490,101 €900,90\\n\\n\\n\\n\\n                                        ae Gae Wneox Tork Univer H2 20n. 190n'20na4lyn 471 103 ynsK 1 2 082,50 2 082,50 20% 410,00 2493,00\\n                                    757995 Мыло жидкое PALMOLIVE 300мп Нейтрализующее запах uit 1 178,33 178,33 20% 35,67 214,00\\n\\n                                  Мыло жидкое Synergetic антибактериальное, Лемонграсс и мята оuUMл LUT 1 74,17 74,17 20% 14,83 89,00\\n                                1308489\\n\\n\\n\\n                              дозатор\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                            Счёт содержит: Сорок два наименования Условия оплаты: Кредитная линия Сумма НДС (20%) 4 133,55 24 801,21\\n\\n\\n\\n                      Поговор купли-продажи Nџ 2424437/ВДА-006/19 от 22.01.2019 Всего НДС 4 133,55\\n              К оллате: Двадцать четыре тысячи восемьсот один рубль 21 коп.\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nСтраница 2 из 3\\nСчёт Nџ OVT/2424437/34876204\\f                                                                                                  сийская\\n                                                                                                    Я ОТВЕТСТВ\\n\\n\\n\\n                                                                                            45 џКОМУСџ\\n\\n                                                                                                    0DO\\n                                                                                                    790 = 1096669\\n                                                                                                    москва\\n                                                                                                                                Внимание!\\n\\n\\n\\n                                                                                                                              оЦены д ействительны на дату выписки счета.\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                            Оплата товара производится в течение срока, указанного в договоре, по ценам, выставленным на дату отгрузки при условии, что изменения курса доллара США (по ЦБ РФ) составили не более 5%. В случае изменения курса доллара США (по ЦБ РФ) более 5% и/или в случае\\n                                                                                                                          оплаты по истечении срока, указанного B договоре, продавец оставляет 3 sa собой право изменить цены на отгруженный товар.\\n                                                                                                                        Товар может быть отгружен от грузоотправителя товара (третьего лица), указанного в товаросопроводительных документах.\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                Руководитель предприятия Гречишкин Константин Алексеевич Mn ю or Главный бухгалтер Матеченкова Мария Павловна\\n\\n\\n\\n\\n                                                                                                (\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nСтраница 3 из 3\\nСчёт Nџ 0VT/2424437/34876204\\f                                                                                                                              Счёт Nџ 0VT/2424437/33994374 от 12.04.2021\\n                                                                                                                      О00 \\\"Комус\\\" 105005, ГОРОД МОСКВА, НАБЕРЕЖНАЯ АКАДЕМИКА ТУПОЛЕВА.\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                    ДОМ 15, КОРПУС 29, ЭТ 5 ПОМ I КАБ 18 Банк получателя ПАО СБЕРБАНК г. Москва\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                К/Сч.Nџ 30101810400000000225\\n                                                                                                            ИНН 7721793895 КПП 997350001\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                        P/Cy.Ne 40702810738000122590\\n                                                                                                      Получатель платежа ООО \\\"КОМУС\\\"\\n                                                                                                Заказчик (Покупатель) ООО \\\"ВДАИ\\\" ИНН 9717065544 КПП 771701001\\n\\n                                                                                              Грузополучатель ООО \\\"ВДАИ\\\" 125047 г.Москва ул.Тверская-Ямская 1-я 21\\n                                                                                          Информация по доставке Елена Лисица (916) 808-20-65\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                      Грузоотправитель ООО \\\"КОМУС\\\" 105005, ГОРОД МОСКВА, НАБЕРЕЖНАЯ АКАДЕМИКА ТУПОЛЕВА, ДОМ 15, КОРПУС 29, Эт 5 ПОМ I КАБ 18\\n                                                                                    контакты по заказу\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                мел (495) 780-80-80, (495) 825-825-8 факс 8-800-200-33-83 e-mail kc@komus.net\\n                                                                            По небостаткам в работе обращаться в Сервис - Центр 8-800-100-82-92 (бесплатный).(495)221-61-75, e-mai:ssc@komus.net\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                          Еџ. Коли- Цена без НДС Сумма без НДС Сумма НДС Сумма с НДС\\n                                                                        Apmukyn Наименование товара изм. чество РУБ РУБ и4е % НлР РУБ Py5\\n                                                                    368584 |Полотенца бумажные д/дисп. Luscan Professionel Z спож2cn190n20пачуn упак 1 960,18 1 960,18 20% 392,04| 2 352,22\\n                                                                163080 |Конверты Белый С4стрип 229x324 901 КОМУС S0uriyn Synikop упак 276,09| 276,09| 20% | 55,22| 331,31\\n                                                            383733 \\ufffd\\ufffd\\ufffd \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd \\ufffd\\ufffd\\ufffd. Bu\\ufffd.\\ufffd\\ufffd 15n. 45Mux12 A\\ufffdtache Selection ur 1 83,96 83,96 20% 16,79 100,75\\n                                                          148053 |Ручка шариковая автоматическая Atache UiHima Supergrp , 5им син ст шт 58,01| 58,01| 20% |11,60| 69,61\\n                                                      131242 Ручка шариковая автоматическая PILOT Acrobail резин.манжет син 0, 28мм шт 1 131,83 131,83 20% 26,37 158,20\\n                                                    эко\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                416838 C\\ufffd\\ufffd\\ufffd\\ufffd Post it Besic Yo\\ufffd 686-8Y 76x76 n\\ufffd\\ufffd\\ufffdT\\ufffdI 400 ur 1 212,21 212,21 20% 42,44 254,65\\n\\n\\n\\n                                            956260 Лапка-регистратор Комус Экономи 75мм белый жасмин, ПБП1, карм.кор., шТ 2 206,54 413,08 20% 82,62 495,70\\n                                          мет.уг\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                        172042 |Папка-регистратор Комус Стандарт 75им синя, ПБП2, карм.кор. , мет уг шт 3 223,31] 669,93] 20% 133,99 803,92\\n\\n\\n\\n                                    383731 \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffdn\\ufffd\\ufffd. Bu\\ufffd.\\ufffd\\ufffd 25n. 45M\\ufffdx12 A\\ufffdtache Selection uT 10 97,50 975,001 20% 195,00 1 170.00\\n                                1047282 | Разделитель листов с индексами Комус А4, цифровой 1-20, цветн пластик упак 2 205,91| 411,82 20% 82,36| 494, 18\\n                              804050 HoxN\\ufffduI Attache selection 3D, 210 MM, nox\\ufffdT\\ufffd Ttanium coffe, uper ko\\ufffde uI 1 412,03 412,03 20% 82,41 494,44\\n\\n\\n\\n                          328393 \\ufffd\\ufffd\\ufffd-\\ufffd\\ufffd\\ufffd\\ufffd A4+ Atache Selection 120 MM 50 uryn ynax 3 464,69 1 394,07 20% 278,81 1 672,88\\n                      520801 |Лента обвязочная для прошивки документов оранжевая, 100 м. Зuп/yпn упак 3 255,00| 765,00| 20% 153.00| 918,00\\n                    181985 |Скрепки КОМУС, 28 мм никелированные 10 шт: в карт.уп упак 5| 51,58| 257,90| 20% 51,58| 309,48\\n\\n                932537 |Профхим освежитель воздуха, конц. Grass/Apartment series AS+, , 6л_т/p шт 115.04 115,04 20% 23,01| 138,05\\n            415845 C\\ufffd\\ufffdR\\ufffdp\\ufffd Postit Z 5noK R330-ONG Bec\\ufffd (00 n UT 2 79,77 159,54 20% 31,91 191,45\\n        139205 Скобы для степлера N24/6 АТТАСНЕ оцинкован (2-30 лист.) 1000 шт в уп. упак 2 23,70 47,40 20% 9,48 56,88\\n      Китай\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n  218943 Краска штемпельная 801 на вод.-глиц.осн.син. 25мл (аналог 7011)Colop шТ 1 155,57 155,57 20% 31,11 186,68\\n  Герман\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nОeт Ne 724348725934372 Странца 1 из 2\\f                                PAI\\n\\n\\n\\n\\n\\n\\n\\n                              1377\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                                                                Eo. Коли- Цена без НДС Сумма без НДС лА Сумма НДС Сумма с НДС\\n                                                                                                                              Артикул Наименование товара изм. чество Py5 Py6 Py6 Py5\\n                                                                                                                          аке 398 мм оцинкованные 100 шт. в карт уп упак 7 25,17 176,19 20% 30,24 211,49\\n                                                                                                                      154005 \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd \\ufffd\\ufffd \\ufffd\\ufffd 7478 xe\\ufffd\\ufffd\\ufffd 0 ur 1 215,43 215,43 20% 43,03 290,92\\n                                                                                                                    \\ufffd\\ufffd\\ufffd\\ufffd7 \\ufffd\\ufffd\\ufffd\\ufffd\\ufffd\\ufffd \\ufffd\\ufffd\\ufffd\\ufffd\\ufffdc\\ufffd \\ufffdA\\ufffd TACH\\ufffd Gri\\ufffd 0. \\ufffd\\ufffd \\ufffd\\ufffd \\ufffd\\ufffd\\ufffd\\ufffd. uT 2 32,02 64,04 20% 12,61 10,05\\n\\n\\n\\n\\n\\n\\n                                                                                                                ЕССО РIЮМЕNТT О 1мм, черный, 168199 шт 165,83) 165,83| 20% 33,1/ 199,0\\n                                                                                                            ицекия ОПI ОТ Н. 185 0. 5 мм черный Япония шт 135,72 135,72 20% 2/,14 104,00\\n                                                                                                          rasess nuven Feber Castel FINEPEN 1511 0, AuM VEDHBIA 151199 uT 1 55,95 55,95 20% 11,19 07,15\\n\\n\\n\\n                                                                                                      BESSEA KapTOUDK DaSeDsIi KONVC BOA CF280A vep. BnS HP LJ 400M425dnIM425dw uT 3 575,00 1 725,00 20% $40,00 2 U10,00\\n                                                                                                392887 Стержень микрографический 0, 5 Faber-Castell POLYMER (12 грифелеи), шт 2 43,75 87,50 20% 17,50 105,00\\n                                                                                                521500\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                            worns lanin arnanu A 30vrx Attache C nepbopawen, 100 un ynax 1 209,33 209,33 20% 41,61 201,20\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                                          nаd Winнwa 4 ми черный шт 150,54| 150,54| 20% 30,11 100,00\\n                                                                                      Корректирующая жидкость Tipp-Ex 20мл на быстросохнущеи основе, шт 1 56,40 56,40 20% 11,28 67,68\\n\\n\\n\\n\\n\\n\\n                                                                                    25706 поролон шТ 2 61,79 123,58 20% 24,72 148,30\\n                                                                                154935 Блок для записей КОМУС запасной 9x9x5 белый блок 100 г, 100\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                            139204 Скобы для степлера N10 АTTАСНЕ оцинкованные (2-20 лист.) 1000 шт в уп упак 10 19,78 197,80 20% 39,56 237,36\\n                                                                          Китай\\n\\n\\n                                                                        Счёт содержит: Тридцать одно наименование\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                                    у евне оппатьт Кредитная линия Сумма НДС (207) 291444 14 204,99\\n                                                                  Договор купли-продажи Nџ 2424437/ВДА-006/19 от 22.01.2019 Всего НДС 2 372,42\\n                                                          К оплате: Четырнадцать тысяч двести тридцать четыре рубля 39 коп.\\n                                                    Внимание!\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                                - Цены действительны на дату выписки счета. о при услових, что измечения курса долара США (по ЦБ РФ) составити не более 5%. В случае изменения урса доллара США по це гоу оли оте нии в муе\\n                                                Оплата товара производится в течение срока, указанного\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                              ы по истечении срока, указанного в договоре, продавец оставляет за собой право изменить цены на отгруженный товер\\n                                            Товао может быть отгружен от грузоотправителя товара (третьего лица), указанного в товаросопроводительных документах. од\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                          стветства\\n                                        о e\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                      М.П. Главный бухгалтер Матеченкова Мария Павловна\\n                                    џ\\n                                    Руководитель предприятия Гречишкин Константин Алексеевич џКоМУСџ :\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n                                  .\\n                              o\\n\\n\\n\\n\\n                          oD џ\\n                        1о0ел730 с 1086\\n                      смост.\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nСтраница 2 из 2\\nСчёт Nџ 0VT/2424437/33994374\\f\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Images and Result Retrieval (TXT)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}/downloads?format=txt",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}",
+						"downloads"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "txt"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Images and Result Retrieval - Rotation True (TXT)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/jobs/{{job_id}}/downloads?format=txt&derotation=true",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"jobs",
+						"{{job_id}}",
+						"downloads"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "txt"
+						},
+						{
+							"key": "derotation",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document Upload - Sync",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"job_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data; boundary=<calculated when request is sent>",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "X-correlation-ID",
+						"value": "gocrReceipt22aa125",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "/Users/I560815/Postman/Receipt/RR/ML3911-image007.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/ocr/syncjobs?format=txt",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ocr",
+						"syncjobs"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "txt"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
